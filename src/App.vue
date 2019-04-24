@@ -1,16 +1,13 @@
 <template lang="pug">
   #app
-    todo
+    router-view
 </template>
 
 
 <script>
-import todo from './components/todo.vue'
-
 export default {
   name: 'app',
   components: {
-   todo
   }
 }
 </script>

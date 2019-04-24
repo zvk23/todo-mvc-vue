@@ -6,7 +6,7 @@
             @checkAllTodos="checkAllTodos"
         )
         todo-list(
-            v-if="filteredTodos.length"
+            v-if="todos.length"
             :todos="filteredTodos"
             :allIsChecked="allIsChecked"
             @removeTodo="removeTodo"

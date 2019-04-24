@@ -13,83 +13,91 @@
                     ref="itemInput"
                 )
             .todo__item-title {{todo.name}}
-        .todo__item-btn-wrapper
-            button.todo__item-btn(
+        .todo__item-btns-wrapper
+            router-link(
+                tag="button"
+                type="button"
+                class="todo__item-btn todo__item-btn--link"
+                :to="`/view/${todo.name}`"
+            ) ->
+
+            button.todo__item-btn.todo__item-btn--remove(
                 @click="removeTodo"
             ) X
 </template>
 
 <script>
 export default {
-    props: {
-        todo: Object
-    },
-    computed: {
-    },
-    methods: {
-        removeTodo() {
-            this.$emit('removeTodo', {...this.todo})
-        },
-        editTodo() {
-            const isChecked = this.$refs.itemInput.checked;
-            this.todo.complited = isChecked
-            this.$emit('editTodo', {...this.todo})
-        }
-    }
-}
+	props: {
+		todo: Object
+	},
+	computed: {},
+	methods: {
+		removeTodo() {
+			this.$emit("removeTodo", { ...this.todo });
+		},
+		editTodo() {
+			const isChecked = this.$refs.itemInput.checked;
+			this.todo.complited = isChecked;
+			this.$emit("editTodo", { ...this.todo });
+		}
+	}
+};
 </script>
 
 <style lang="scss" scoped>
-
 .todo__item {
-    color: #777777;
-    display: flex;
-    align-items: center;
-    line-height: 1.4em;
-    padding: 10px 0;
+	color: #777777;
+	display: flex;
+	align-items: center;
+	line-height: 1.4em;
+	padding: 10px 0;
 
-    &:hover {
-        .todo__item-btn {
-            opacity: 1;
-        }
-    }
+	&:hover {
+		.todo__item-btns-wrapper {
+			opacity: 1;
+		}
+	}
 
-    &.is-checked {
-        .todo__item-title {
-            text-decoration: line-through;
-        }
-    }
+	&.is-checked {
+		.todo__item-title {
+			text-decoration: line-through;
+		}
+	}
 }
 
 .todo__item-label {
-    display: flex;
-    align-items: center;
-    flex:1;
+	display: flex;
+	align-items: center;
+	flex: 1;
 }
 
 .todo__input-block {
-    display: flex;
-    align-items: center;
-    width: 60px;
-    align-items: center;
-    justify-content: center;
+	display: flex;
+	align-items: center;
+	width: 60px;
+	align-items: center;
+	justify-content: center;
 }
 
-.todo__item-btn-wrapper {
-    width: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.todo__item-btns-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    margin-right: 15px;
+    opacity: 0;
+    transition: opacity .3s;
 }
 
 .todo__item-btn {
-    background: none;
-    border: none;
-    color: firebrick;
-    font-size: 20px;
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity .3s;
+	&--remove {
+		background: none;
+		border: none;
+		color: firebrick;
+		font-size: 20px;
+		cursor: pointer;
+        margin-left: 10px;
+	}
 }
 </style>
 
