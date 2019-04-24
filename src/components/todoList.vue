@@ -2,21 +2,62 @@
     .todo__list-wrapper
         .todo__list-content
             ul.todo__list
-                li.todo__list-item
-                    todo-item
+                li.todo__list-item(
+                    v-for="todo in todos"
+                    :key="todo.id"
+                )
+                    todo-item(
+                        :todo="todo"
+                        @removeTodo="removeTodo"
+                        @editTodo="editTodo"
+                    )
         
         .todo__list-footer
-            .todo__item-counter 10 item left
+            .todo__item-counter {{counter}} item left
             .todo__list-filter
+                todoListFilter(
+                    @filterTodos="filterTodos"
+                )
+            .todo__clear-all-btn 
+                button(
+                    v-if="allIsChecked"
+                    @click="removeCheckedTodods"
+                    type="button"
+                ) Clear checked todos
 </template> 
 
 <script>
 import todoItem from "./todoItem";
+import todoListFilter from "./todoListFilter";
 
 export default {
 	components: {
-		todoItem
-	}
+		todoItem,
+        todoListFilter
+	},
+    props: {
+        todos: Array,
+        allIsChecked: Boolean
+    },
+    computed: {
+        counter: function () {
+            return this.todos.length
+        }
+    },
+    methods: {
+        removeTodo(todo) {
+            this.$emit('removeTodo', todo)
+        },
+        editTodo(todo) {
+            this.$emit('editTodo', todo)
+        },
+        filterTodos(filter) {
+            this.$emit('filterTodos', filter)
+        },
+        removeCheckedTodods() {
+            this.$emit('removeCheckedTodods')
+        }
+    }
 };
 </script>
 
@@ -41,6 +82,12 @@ export default {
     text-align: center;
     position: relative;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.todo__list-filter {
+    margin: 0 auto;
 }
 </style>
 

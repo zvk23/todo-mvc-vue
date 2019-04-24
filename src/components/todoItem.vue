@@ -1,33 +1,64 @@
 <template lang="pug">
-    .todo__item
+    div(
+        class="todo__item"
+        :class="{'is-checked' : todo.complited}"
+    )
         label.todo__item-label
             .todo__input-block
                 input(
                     type="checkbox"
                     class="todo__item-checkbox"
+                    @change="editTodo"
+                    :checked="todo.complited"
+                    ref="itemInput"
                 )
-            .todo__item-title todo name
+            .todo__item-title {{todo.name}}
         .todo__item-btn-wrapper
-            button.todo__item-btn X
+            button.todo__item-btn(
+                @click="removeTodo"
+            ) X
 </template>
 
 <script>
 export default {
-    
+    props: {
+        todo: Object
+    },
+    computed: {
+    },
+    methods: {
+        removeTodo() {
+            this.$emit('removeTodo', {...this.todo})
+        },
+        editTodo() {
+            const isChecked = this.$refs.itemInput.checked;
+            this.todo.complited = isChecked
+            this.$emit('editTodo', {...this.todo})
+        }
+    }
 }
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
+
 .todo__item {
     color: #777777;
     display: flex;
     align-items: center;
     line-height: 1.4em;
-    padding: 10px 0; 
-}
+    padding: 10px 0;
 
-.todo__item:hover .todo__item-btn {
-    opacity: 1;
+    &:hover {
+        .todo__item-btn {
+            opacity: 1;
+        }
+    }
+
+    &.is-checked {
+        .todo__item-title {
+            text-decoration: line-through;
+        }
+    }
 }
 
 .todo__item-label {
