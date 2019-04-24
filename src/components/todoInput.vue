@@ -19,6 +19,7 @@
 
 <script>
 import SimpleVueValidator from "simple-vue-validator";
+import { mapActions, mapState } from 'vuex'
 
 const Validator = SimpleVueValidator.Validator;
 let uniqId = 0;
@@ -42,13 +43,14 @@ export default {
 		todosLenght: Number
 	},
 	methods: {
+		...mapActions('todos', ['addTodo']),
 		addNewTodo() {
 			this.$validate().then(success => {
 				if (!success) return
                 else {
                     uniqId++;
 					this.todo.id = uniqId;
-					this.$emit("addTodo", { ...this.todo });
+					this.addTodo({...this.todo})
 					this.todo.name = "";
                     this.validation.reset()
                 }

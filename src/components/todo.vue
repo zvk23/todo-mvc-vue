@@ -1,7 +1,6 @@
 <template lang="pug">
     .todo
         todo-input(
-            @addTodo="addTodo"
             :todosLenght="filteredTodos.length"
             @checkAllTodos="checkAllTodos"
         )
@@ -19,6 +18,7 @@
 <script>
 import todoInput from './todoInput'
 import todoList from './todoList'
+import { mapActions, mapState } from 'vuex'
 
 export default {
     components: {
@@ -27,11 +27,13 @@ export default {
     },
     data() {
         return {
-            todos: [],
             filter: 'all'
         }
     },
     computed: {
+        ...mapState('todos', {
+           todos: (state) => state.todos 
+        }),
         filteredTodos() {
             if (this.filter === 'all') {
                 return this.todos

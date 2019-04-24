@@ -8,7 +8,7 @@
                 input(
                     type="checkbox"
                     class="todo__item-checkbox"
-                    @change="editTodo"
+                    @change="editCurrentTodo"
                     :checked="todo.complited"
                     ref="itemInput"
                 )
@@ -22,24 +22,26 @@
             ) ->
 
             button.todo__item-btn.todo__item-btn--remove(
-                @click="removeTodo"
+                @click="removeCurrentTodo"
             ) X
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
 	props: {
 		todo: Object
 	},
 	computed: {},
 	methods: {
-		removeTodo() {
-			this.$emit("removeTodo", { ...this.todo });
+		...mapActions('todos', ['removeTodo', 'editTodo']),
+		removeCurrentTodo() {
+			this.removeTodo(this.todo)
 		},
-		editTodo() {
+		editCurrentTodo() {
 			const isChecked = this.$refs.itemInput.checked;
 			this.todo.complited = isChecked;
-			this.$emit("editTodo", { ...this.todo });
+			this.editTodo(this.todo)
 		}
 	}
 };
