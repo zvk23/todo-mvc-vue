@@ -1,7 +1,6 @@
 <template lang="pug">
     .todo
         todo-input(
-            :todosLenght="filteredTodos.length"
             @checkAllTodos="checkAllTodos"
         )
         todo-list(
@@ -11,7 +10,6 @@
             @removeTodo="removeTodo"
             @editTodo="editTodo"
             @filterTodos="filterTodos"
-            @removeCheckedTodods="removeCheckedTodods"
         )
 </template>
 
@@ -48,6 +46,7 @@ export default {
         }
     },
     methods: {
+        ...mapActions('todos', ['fetchTodos']),
         addTodo(todo) {
             this.todos.push(todo)
         },
@@ -62,11 +61,11 @@ export default {
         },
         checkAllTodos() {
             this.todos.forEach(item => item.complited = true)
-        },
-        removeCheckedTodods() {
-            this.todos = this.todos.filter(item => !item.complited)
         }
     },
+    created() {
+        this.fetchTodos()
+    }
 }
 </script>
 

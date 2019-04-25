@@ -29,6 +29,7 @@
 <script>
 import todoItem from "./todoItem";
 import todoListFilter from "./todoListFilter";
+import { mapActions, mapState } from 'vuex'
 
 export default {
 	components: {
@@ -45,6 +46,7 @@ export default {
         }
     },
     methods: {
+        ...mapActions('todos', ['removeAllTodo']),
         removeTodo(todo) {
             this.$emit('removeTodo', todo)
         },
@@ -55,7 +57,7 @@ export default {
             this.$emit('filterTodos', filter)
         },
         removeCheckedTodods() {
-            this.$emit('removeCheckedTodods')
+            this.removeAllTodo()
         }
     }
 };

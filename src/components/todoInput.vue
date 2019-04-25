@@ -4,7 +4,7 @@
         div(
             @click="checkAllTodos"
             class="todo__check-all-btn"
-            :class="{'is-disabled' : todosLenght == 0}"
+            :class="{'is-disabled' : todosLength == 0}"
         )
         input(
             v-model="todo.name"
@@ -19,10 +19,10 @@
 
 <script>
 import SimpleVueValidator from "simple-vue-validator";
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
+import { getUniqId } from '../helpers/generateUniqId.js'
 
 const Validator = SimpleVueValidator.Validator;
-let uniqId = 0;
 export default {
 	mixins: [SimpleVueValidator.mixin],
 	validators: {
@@ -33,14 +33,17 @@ export default {
 	data() {
 		return {
 			todo: {
-				id: uniqId,
+				id: getUniqId(this.todosLenght),
 				name: "",
 				complited: false
 			}
 		};
 	},
 	props: {
-		todosLenght: Number
+		// todosLenght: Number
+	},
+	computed: {
+		...mapGetters('todos', ['todosLength'])
 	},
 	methods: {
 		...mapActions('todos', ['addTodo']),
@@ -48,8 +51,8 @@ export default {
 			this.$validate().then(success => {
 				if (!success) return
                 else {
-                    uniqId++;
-					this.todo.id = uniqId;
+                    let id = getUniqId(this.todosLength)
+					this.todo.id = id;
 					this.addTodo({...this.todo})
 					this.todo.name = "";
                     this.validation.reset()
@@ -59,6 +62,8 @@ export default {
 		checkAllTodos() {
 			this.$emit("checkAllTodos");
 		}
+	},
+	created() {
 	}
 };
 </script>
